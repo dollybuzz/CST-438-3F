@@ -15,12 +15,15 @@ public class CityController {
 	@Autowired
 	private CityService cityService;
 	
+	/*This method will call the CityService class which will return data from the world.city
+	 * sample table and get current weather for the city. The HTML page returned by the controller
+	 * should contain city information, the country name, the current temperature, and the local time of
+	 * the temperature reading.*/
 	@GetMapping("/cities/{city}")
 	public String getWeather(@PathVariable("city") String cityName, Model model) {
 
-		// TODO Your code goes here
-		// TODO delete the following line
-		return "";
+		model.addAttribute(cityName);
+		return "city";
 	} 
 	
 }

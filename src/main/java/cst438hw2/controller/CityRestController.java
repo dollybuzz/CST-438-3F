@@ -17,10 +17,11 @@ public class CityRestController {
 	@Autowired
 	private CityService cityService;
 	
+	
+	/*Routes a URL to the RestController which will return the same data in JSON format for
+	 consumption by an AJAX call or mobile or other application.*/
 	@GetMapping("/api/cities/{city}")
 	public ResponseEntity<CityInfo> getWeather(@PathVariable("city") String cityName) {
-		// TODO your code goes here
-		// TODO delete the following line
 		CityInfo info = cityService.getCityInfo(cityName);
 		
 		if(info == null)
