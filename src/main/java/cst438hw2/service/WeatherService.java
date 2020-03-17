@@ -17,7 +17,7 @@ public class WeatherService {
 	private String weatherUrl;
 	private String apiKey;
 	
-	public WeatherService(
+	public WeatherService(	//Constructor, the value for weatherUrl and apiKey are obtained from the application.properties file
 			@Value("${weather.url}") final String weatherUrl, 
 			@Value("${weather.apikey}") final String apiKey ) {
 		this.restTemplate = new RestTemplate();
@@ -29,10 +29,14 @@ public class WeatherService {
 		ResponseEntity<JsonNode> response = restTemplate.getForEntity(
 				weatherUrl + "?q=" + cityName + "&appid=" + apiKey,
 				JsonNode.class);
-		JsonNode json = response.getBody();
+		JsonNode json = response.getBody();	//takes the text returned by the server and parses it into a tree like data structure
+		//called JsonNode. Using the JsonNode object returned by getBody, attributes such as "dt" or "timezone" can be obtained
+		//by a get method call. The "temp" attribute is nested inside an attribute named "main".
+		//So it first performs a do get on "main" then a second do get on "temp" within "main".
 		log.info("Status code from weather server:" + response.getStatusCodeValue());
+		
 		double temp = json.get("main").get("temp").asDouble();
-		long time = json.get("dt").asLong();
+		String time = json.get("dt").toString();
 		int timezone = json.get("timezone").asInt();
 		return new TempAndTime(temp, time, timezone);
 	}

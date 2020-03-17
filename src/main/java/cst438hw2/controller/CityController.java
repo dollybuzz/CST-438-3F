@@ -9,16 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import cst438hw2.domain.*;
 import cst438hw2.service.CityService;
 
+//This method handles the http get request. The @PathVariable annotation tells spring to
+//parse the url and put the text that occurs after /cities/ into the cityName parameter
+
 @Controller
 public class CityController {
 	
-	@Autowired
-	private CityService cityService;
-	
-	/*This method will call the CityService class which will return data from the world.city
-	 * sample table and get current weather for the city. The HTML page returned by the controller
-	 * should contain city information, the country name, the current temperature, and the local time of
-	 * the temperature reading.*/
 	@GetMapping("/cities/{city}")
 	public String getWeather(@PathVariable("city") String cityName, Model model) {
 

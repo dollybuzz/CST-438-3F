@@ -35,7 +35,6 @@ public class CityInfo {
 		this.time = time;
 	}
 
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
