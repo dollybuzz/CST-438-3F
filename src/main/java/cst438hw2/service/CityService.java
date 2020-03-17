@@ -1,18 +1,22 @@
 package cst438hw2.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cst438hw2.domain.*;
+import cst438hw2.City;
+import cst438hw2.CityRepository;
+import cst438hw2.Country;
+import cst438hw2.CountryRepository;
+import cst438hw2.domain.CityInfo;
+import cst438hw2.domain.TempAndTime;
+
+//Gets date from the database, uses CountryRepository and CityRepository to obtain information on the city and country
 
 @Service
 public class CityService {
-	
+
 	@Autowired
 	private CityRepository cityRepository;
 	
@@ -24,9 +28,31 @@ public class CityService {
 	
 	public CityInfo getCityInfo(String cityName) {
 		
-		// TODO your code goes here
-		// delete the following line
-		return null; 
+		City city;
+		Country country;
+		TempAndTime tempAndTime;
+		double temp;
+		String time;
+		
+		List<City> cities = cityRepository.findByName(cityName);
+		
+		if(!cities.isEmpty())
+		{
+			city = cities.get(0);
+		} else {
+			return null;
+		}
+		
+		country = countryRepository.findByCode(city.getCountryCode());
+		tempAndTime = weatherService.getTempAndTime(cityName);
+		temp = tempAndTime.getTemp();
+		time = tempAndTime.timeToString(tempAndTime.getTime());
+		
+		
+		CityInfo cityInfo = new CityInfo(city.getId(), city.getName(), city.getCountryCode(), 
+				country.getCountryName(), city.getDistrict(), city.getPopulation(),
+				temp, time);
+		
+		return cityInfo;
 	}
-	
 }
