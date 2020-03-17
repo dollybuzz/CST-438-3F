@@ -2,6 +2,7 @@ package cst438hw2.domain;
 
 import javax.persistence.*;
 
+//Retrieves the countryCode and countryName, does not need to include all columns of the country table
 
 @Entity
 @Table(name="country")

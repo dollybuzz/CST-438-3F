@@ -5,12 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cst438hw2.City;
-import cst438hw2.CityRepository;
-import cst438hw2.Country;
-import cst438hw2.CountryRepository;
-import cst438hw2.domain.CityInfo;
-import cst438hw2.domain.TempAndTime;
+import cst438hw2.domain.*;
 
 //Gets date from the database, uses CountryRepository and CityRepository to obtain information on the city and country
 
@@ -50,7 +45,7 @@ public class CityService {
 		
 		
 		CityInfo cityInfo = new CityInfo(city.getId(), city.getName(), city.getCountryCode(), 
-				country.getCountryName(), city.getDistrict(), city.getPopulation(),
+				country.getName(), city.getDistrict(), city.getPopulation(),
 				temp, time);
 		
 		return cityInfo;

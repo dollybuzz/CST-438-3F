@@ -2,6 +2,7 @@ package cst438hw2.domain;
 
 import javax.persistence.*;
 
+//Retrieves data from the city table
 
 @Entity
 @Table(name="city")
@@ -67,7 +68,6 @@ public class City {
 				+ ", population=" + population 
 				+ "]";
 	}
-	
 	
 
 }
