@@ -36,7 +36,7 @@ public class WeatherService {
 		log.info("Status code from weather server:" + response.getStatusCodeValue());
 		
 		double temp = json.get("main").get("temp").asDouble();
-		String time = json.get("dt").toString();
+		long time = json.get("dt").asLong();
 		int timezone = json.get("timezone").asInt();
 		return new TempAndTime(temp, time, timezone);
 	}
