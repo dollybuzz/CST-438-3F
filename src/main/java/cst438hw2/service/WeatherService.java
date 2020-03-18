@@ -38,8 +38,8 @@ public class WeatherService {
 		log.info("Status code from weather server:" + response.getStatusCodeValue());
 		
 		double temp = json.get("main").get("temp").asDouble();
-		long time = json.get("dt").asLong();
 		int timezone = json.get("timezone").asInt();
+		long time = json.get("dt").asLong();
 		return new TempAndTime(temp, time, timezone);
 	}
 }

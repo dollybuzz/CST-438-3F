@@ -29,7 +29,7 @@ public TempAndTime(double temp, long time, int timezone){
 		this.time = time;
 	}
 	
-	public String timeToString(long time) {
+	public String timeToString() {
 		return Long.toString(time);
 	}
 

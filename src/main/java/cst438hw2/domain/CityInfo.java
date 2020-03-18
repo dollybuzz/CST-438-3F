@@ -1,5 +1,8 @@
 package cst438hw2.domain;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CityInfo {
 	
 	 long id;
@@ -135,11 +138,23 @@ public class CityInfo {
 	}
 
 	public String getTime() {
+		
 		return time;
 	}
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+	
+	public String convertToFahrenheit() {
+		double temperature = (temp- 237.15) * (9/5) + 32;
+		String tempF = String.format("%.2f", temperature) + " °F";
+		return tempF;
+	}
+	public String getLocalTime() {
+		Date epochValue = new Date(Long.parseLong(time)*1000);
+		String time = new SimpleDateFormat("h:mm a").format(epochValue);
+		return time;
 	}
 
 	@Override

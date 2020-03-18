@@ -31,7 +31,7 @@ public class CityController {
 		{
 			model.addAttribute("cityInfo", cityInfo);
 		}
-		return "city";
+		return "service";
 	} 
 	
 }
