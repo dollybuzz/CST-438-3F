@@ -39,7 +39,7 @@ public class WeatherService {
 		
 		double temp = json.get("main").get("temp").asDouble();
 		int timezone = json.get("timezone").asInt();
-		long time = json.get("dt").asLong();
+		long time = (json.get("dt").asLong()+timezone);
 		return new TempAndTime(temp, time, timezone);
 	}
 }

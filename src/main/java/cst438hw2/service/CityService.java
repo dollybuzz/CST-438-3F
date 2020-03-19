@@ -25,7 +25,8 @@ public class CityService {
 		
 		City city;
 		Country country;
-		TempAndTime tempAndTime;
+		TempAndTime temp;
+		TempAndTime time;
 		
 		List<City> cities = cityRepository.findByName(cityName);
 		
@@ -37,13 +38,12 @@ public class CityService {
 		}
 		
 		country = countryRepository.findByCode(city.getCountryCode());
-		tempAndTime = weatherService.getTempAndTime(cityName);
-		
-		
+		temp = weatherService.getTempAndTime(cityName);
+		time = weatherService.getTempAndTime(cityName);
 		
 		CityInfo cityInfo = new CityInfo(city.getId(), city.getName(), city.getCountryCode(), 
 				country.getName(), city.getDistrict(), city.getPopulation(),
-				tempAndTime.getTemp(), tempAndTime.timeToString());
+				temp.temp, time.timeToString());
 		
 		return cityInfo;
 	}

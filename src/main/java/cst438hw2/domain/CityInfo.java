@@ -1,7 +1,6 @@
 package cst438hw2.domain;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
 
 public class CityInfo {
 	
@@ -138,7 +137,6 @@ public class CityInfo {
 	}
 
 	public String getTime() {
-		
 		return time;
 	}
 
@@ -147,14 +145,16 @@ public class CityInfo {
 	}
 	
 	public String convertToFahrenheit() {
-		double temperature = (temp- 237.15) * (9/5) + 32;
+		double temperature = (temp - 273.15) * 9/5 + 32;
 		String tempF = String.format("%.2f", temperature) + " °F";
 		return tempF;
 	}
 	public String getLocalTime() {
-		Date epochValue = new Date(Long.parseLong(time)*1000);
-		String time = new SimpleDateFormat("h:mm a").format(epochValue);
-		return time;
+		Long epochValue = Long.parseLong(getTime());
+		Instant instant = Instant.ofEpochSecond(epochValue);
+		String timeString = instant.toString();
+		timeString = timeString.substring(11, 16); //military time
+		return timeString;
 	}
 
 	@Override
