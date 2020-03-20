@@ -1,9 +1,7 @@
 package cst438hw2.service;
  
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 
-import static org.junit.Assert.assertNull;
 import static org.mockito.BDDMockito.given;
 
 
@@ -14,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import static org.mockito.ArgumentMatchers.anyString;
-
 import cst438hw2.domain.*;
  
 @SpringBootTest
@@ -38,21 +34,34 @@ public class CityServiceTest {
 	public void contextLoads() {
 	}
 
-
 	@Test
 	public void testCityFound() throws Exception {
-		List<City> tests = new ArrayList<City>();
-		tests.add(new City(3838, "Honolulu", "USA", "Hawaii", 371657));
-		City testCity = new City(3838, "Honolulu", "USA", "Hawaii", 371657);
-		CityInfo realInfo = cityService.getCityInfo("Honolulu");
 		
-		given(cityRepository.findByName("Honolulu")).willReturn(tests);
-		given(countryRepository.findByCode("USA")).willReturn(new Country("USA", "United States"));
-		given(weatherService.getTempAndTime("Honolulu")).willReturn(new TempAndTime(294.88, 1584501287, -36000));
-		
-		assertThat(realInfo).isEqualTo(testCity);
-	}
+		//test City data using city repository
+		List<City> cityList = new ArrayList<City>();
+		cityList.add(new City(3838, "Honolulu", "USA", "Hawaii", 371657));
 	
+		//test Weather data
+		TempAndTime weatherTestInfo = new TempAndTime(297.16, 1584666600, -36000);
+				
+		//test Country data
+		Country countryTestInfo = new Country("USA", "Hawaii");
+		
+		//test CityInfo data using fake values
+		CityInfo cityTestInfo = new CityInfo((long)3838, "Honolulu", "USA", "Hawaii", "Oahu", 371657, 74.93, "2020-03-19T15:35:39Z");
+		CityInfo cityRealInfo = cityService.getCityInfo("Honolulu");
+		
+		//performing tests
+		//Note: assert is the main testing and will throw an error if contents are not true
+		//given is built into spring and "creates" mock conditions, sets up the test
+		given(cityRepository.findByName("Honolulu")).willReturn(cityList);
+		given(weatherService.getTempAndTime("Honolulu")).willReturn(weatherTestInfo);
+		given(countryRepository.findByCode("USA")).willReturn(countryTestInfo);
+		assertThat(cityRealInfo).isEqualTo(cityTestInfo); //won't pass, cityRealInfo returns null object
+		//refer to CityService.java
+		
+	}
+	/*
 	@Test 
 	public void  testCityNotFound() {
 		City testCity = new City(24, "TestCity", "USA", "Somewhere", 1);
@@ -76,7 +85,5 @@ public class CityServiceTest {
 		CityInfo realInfo = cityService.getCityInfo("Los Angeles");
 		
 		assertThat(realInfo).isEqualTo(testCountry);
-
-	}
-
+	}*/
 }

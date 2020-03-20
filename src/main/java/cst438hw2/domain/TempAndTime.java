@@ -1,6 +1,6 @@
 package cst438hw2.domain;
 
-//A helper class used to return multiple values from the getTimeAndTemp method
+//Helper class for City Entity, used to return multiple values from the getTimeAndTemp method within weatherService
 
 public class TempAndTime {
 	public double temp;
@@ -15,11 +15,6 @@ public TempAndTime(double temp, long time, int timezone){
 	
 	public String timeToString() {
 		return Long.toString(time);
-	}
-	
-	@Override
-	public String toString() {
-		return "TempAndTime [Temp=" + temp + ", Time=" + time + ", TimeZone=" + timezone + "]";
 	}
 }
 

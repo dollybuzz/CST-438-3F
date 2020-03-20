@@ -30,13 +30,10 @@ public class CityService {
 		
 		List<City> cities = cityRepository.findByName(cityName);
 		
-		if(!cities.isEmpty())
-		{
-			city = cities.get(0);
-		} else {
+		if (cities.size() == 0) {
 			return null;
 		}
-		
+		city = cities.get(0);
 		country = countryRepository.findByCode(city.getCountryCode());
 		temp = weatherService.getTempAndTime(cityName);
 		time = weatherService.getTempAndTime(cityName);

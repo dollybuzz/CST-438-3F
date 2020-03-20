@@ -2,6 +2,8 @@ package cst438hw2.domain;
 
 import java.time.Instant;
 
+//Helper class for City Entity, uses TempAndTime helper class to get data from weatherService
+
 public class CityInfo {
 	
 	 long id;
@@ -146,7 +148,7 @@ public class CityInfo {
 	
 	public String convertToFahrenheit() {
 		double temperature = (temp - 273.15) * 9/5 + 32;
-		String tempF = String.format("%.2f", temperature) + " °F";
+		String tempF = Double.toString(temperature);
 		return tempF;
 	}
 	public String getLocalTime() {
