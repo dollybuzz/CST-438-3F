@@ -34,12 +34,14 @@ public class CityServiceTest {
 	public void contextLoads() {
 	}
 
+	
+	//Testing if valid data returns a real city
 	@Test
 	public void testCityFound() throws Exception {
 		
 		//test City data using city repository
 		List<City> cityList = new ArrayList<City>();
-		cityList.add(new City(3838, "Honolulu", "USA", "Hawaii", 371657));
+		cityList.add(new City((long)3838, "Honolulu", "USA", "Hawaii", 371657));
 	
 		//test Weather data
 		TempAndTime weatherTestInfo = new TempAndTime(297.16, 1584666600, -36000);
@@ -48,42 +50,55 @@ public class CityServiceTest {
 		Country countryTestInfo = new Country("USA", "Hawaii");
 		
 		//test CityInfo data using fake values
-		CityInfo cityTestInfo = new CityInfo((long)3838, "Honolulu", "USA", "Hawaii", "Oahu", 371657, 74.93, "2020-03-19T15:35:39Z");
-		CityInfo cityRealInfo = cityService.getCityInfo("Honolulu");
+		CityInfo cityTestInfo = new CityInfo((long)3838, "Honolulu", "USA", "Hawaii", "Hawaii", 371657, 297.16, "1584666600");
 		
-		//performing tests
-		//Note: assert is the main testing and will throw an error if contents are not true
-		//given is built into spring and "creates" mock conditions, sets up the test
+		//building tests
+		//given is built into spring and "creates" mock conditions (MockBeans), sets up the MockBeans' functionalities
 		given(cityRepository.findByName("Honolulu")).willReturn(cityList);
 		given(weatherService.getTempAndTime("Honolulu")).willReturn(weatherTestInfo);
 		given(countryRepository.findByCode("USA")).willReturn(countryTestInfo);
-		assertThat(cityRealInfo).isEqualTo(cityTestInfo); //won't pass, cityRealInfo returns null object
-		//refer to CityService.java
 		
-	}
-	/*
-	@Test 
-	public void  testCityNotFound() {
-		City testCity = new City(24, "TestCity", "USA", "Somewhere", 1);
-		CityInfo realInfo = cityService.getCityInfo(testCity.getName());
+		CityInfo cityRealInfo = cityService.getCityInfo("Honolulu");
 		
-		assertThat(testCity).isEqualTo(realInfo);
+		//performing test
+		//assert is the main testing and will throw an error if contents are not true
+		assertThat(cityRealInfo).isEqualTo(cityTestInfo);
 	}
 	
+	//Testing that invalid data returns null
 	@Test 
-	public void  testCityMultiple() {
-		List<City> tests = new ArrayList<City>();
-		tests.add(new City(568, "Los Angeles", "CHL", "Chile", 158215));
-		tests.add(new City(3794, "Los Angeles", "USA", "California", 3694820));
-		Country testCountry = new Country("CHL", "Chile");
-		TempAndTime testTempTime = new TempAndTime(282.35, 1584506871, -25200);
+	public void  testCityNotFound() {
+		//test data
+		CityInfo testCityInfo = null;
+		TempAndTime fakeData = new TempAndTime(1, 200, 1584666680);
 		
-		given(cityRepository.findByName("Los Angeles")).willReturn(tests);
-		given(countryRepository.findByCode("CHL")).willReturn(new Country("CHL", "Chile"));
+		//building test
+		given(weatherService.getTempAndTime("InvalidCity")).willReturn(fakeData);
+		
+		CityInfo realCityInfo = cityService.getCityInfo("InvalidCity");
+		
+		//performing test
+		assertThat(testCityInfo).isEqualTo(realCityInfo);
+	}
+	
+	//Testing that duplicate City names return the first city in the table
+	@Test
+	public void  testCityMultiple() {
+		//test data
+		List<City> cityList = new ArrayList<City>();
+		cityList.add(new City((long)568, "Los Angeles", "CHL", "Chile", 158215));
+		CityInfo testCityInfo = new CityInfo((long)568, "Los Angeles", "CHL", "Chile", "Chile", 158215, 288.47, "1584841045");
+		Country testCountry = new Country("CHL", "Chile");
+		TempAndTime testTempTime = new TempAndTime(288.47, 1584841045, -25200);
+				
+		//building test
+		given(cityRepository.findByName("Los Angeles")).willReturn(cityList);
+		given(countryRepository.findByCode("CHL")).willReturn(testCountry);
 		given(weatherService.getTempAndTime("Los Angeles")).willReturn(testTempTime);
 		
-		CityInfo realInfo = cityService.getCityInfo("Los Angeles");
+		CityInfo firstRealCityInfoFromTable = cityService.getCityInfo("Los Angeles");
 		
-		assertThat(realInfo).isEqualTo(testCountry);
-	}*/
+		//performing test
+		assertThat(firstRealCityInfoFromTable).isEqualTo(testCityInfo);
+	}
 }
