@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -47,10 +46,48 @@ public class CityRestControllerTest {
 	public void contextLoads() {
 	}
 
+	//Testing that valid data provides valid HTTP response
 	@Test
-	public void getCityInfo() throws Exception {
+	public void getValidCityInfo() throws Exception {
 		
-		// TODO your code goes here
+		//expected data
+		CityInfo expected = new CityInfo((long)3838, "Honolulu", "USA", "Hawaii", "Hawaii", 371657, 297.16, "1584666600");
+		
+		//stub out cityService class
+		given(cityService.getCityInfo("Honolulu")).willReturn(expected);
+		
+		//when
+		MockHttpServletResponse response = mvc.perform(
+				get("/api/cities/Honolulu").contentType(MediaType.APPLICATION_JSON)
+						.content(json.write(expected).getJson()))
+				.andReturn().getResponse();
+		
+		//then
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+		assertThat(response.getContentAsString()).isEqualTo(
+				json.write(expected).getJson());
+	}
+	
+	//Testing that invalid data does not provide a valid HTTP response
+	@Test
+	public void getInvalidCityInfo() throws Exception {
+		
+		//expected data
+		CityInfo invalidAttempt = new CityInfo((long)3838, "Honolulu", "USA", "Hawaii", "Oahu", 371657, 297.16, "1584666600");
+		CityInfo expected = new CityInfo((long)3838, "Honolulu", "USA", "Hawaii", "Hawaii", 371657, 297.16, "1584666600");
+				
+		//stub out cityService class
+		given(cityService.getCityInfo("Honolulu")).willReturn(expected);
+				
+		//when
+		MockHttpServletResponse response = mvc.perform(
+				get("/api/cities/test").contentType(MediaType.APPLICATION_JSON)
+						.content(json.write(invalidAttempt).getJson()))
+				.andReturn().getResponse();
+				
+		//then
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+		assertThat(response.getContentAsString()).isEqualTo("");
 	}
 
 }
